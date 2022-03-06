@@ -1,0 +1,79 @@
+Use HR database for below queries
+1. WAQ to display second highest salary in HR schema.
+
+Query:-
+
+select max(salary) from employees where salary < (select max(salary) from employees);
+
+Output:-
+ 
+  max
+----------
+ 17000.00
+(1 row)
+
+2. WAQ to display name of employee who is earning maximum in his/her department.
+
+Query:-
+
+select first_name, last_name from employees where (salary, department_id) in (select max(salary), department_id from employees group by department_id);
+
+Output:-
+
+ first_name | last_name
+------------+-----------
+ Steven     | King
+ Alexander  | Hunold
+ Nancy      | Greenberg
+ Den        | Raphaely
+ Adam       | Fripp
+ John       | Russell
+ Jennifer   | Whalen
+ Michael    | Hartstein
+ Susan      | Mavris
+ Hermann    | Baer
+ Shelley    | Higgins
+(11 rows)
+
+3. WAQ to display emplyees count who are working from same location.
+
+Query:-
+select l.city, count(e.employee_id) from employees e, locations l, departments d where d.location_id = l.location_id and e.department_id = d.department_id group by city;
+
+Output:-
+
+        city         | count
+---------------------+-------
+ Southlake           |     5
+ London              |     1
+ South San Francisco |    45
+ Toronto             |     2
+ Seattle             |    18
+ Oxford              |    34
+ Munich              |     1
+(7 rows)
+
+4. WAQ to display number of employees joined year wise.
+
+Query:-
+
+select to_char(hire_date, 'yyyy') as year, count(employee_id) as number_of_employees from employees group by to_char(hire_date, 'yyyy') order by to_char(hire_date, 'yyyy');
+
+Output:-
+
+ year | number_of_employees
+------+---------------------
+ 1987 |                   2
+ 1989 |                   1
+ 1990 |                   1
+ 1991 |                   1
+ 1993 |                   1
+ 1994 |                   7
+ 1995 |                   4
+ 1996 |                  10
+ 1997 |                  28
+ 1998 |                  23
+ 1999 |                  18
+ 2000 |                  11
+(12 rows)
+5. WAQ to top 2 earning employee name and salary in each department. 
